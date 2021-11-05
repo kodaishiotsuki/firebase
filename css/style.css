@@ -1,0 +1,81 @@
+body {
+  width: 1000px;
+  text-align: center;
+  margin-left: 500px;
+  background-image: url(../img/pexels-photo-669576.jpeg);
+  background-size: 100%;
+  background-position: center;
+  margin-top: 130px;
+}
+
+.rollno,
+.name,
+.type {
+  font-size: 50px;
+  margin-right: 70px;
+}
+
+label {
+  font-size: 50px;
+  margin-right: 40px;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 300px;
+  height: 50px;
+  font-size: 50px;
+  margin-bottom: 50px;
+  padding: 10px;
+}
+
+#genbox {
+  font-size: 50px;
+  height: 80px;
+  width: 320px;
+}
+
+h1 {
+  font-size: 70px;
+  font-weight: bold;
+  margin: 25px 0;
+}
+
+button {
+  width: 230px;
+  font-size: 40px;
+  padding: 20px;
+  margin-top: 50px;
+  margin-right: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 0 #524d4d;
+  transition: 0.3s;
+  border: none;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+button::after {
+  border-top: 3px solid #333333;
+  border-right: 3px solid #333333;
+  transform: rotate(45deg);
+}
+
+button:hover {
+  transform: translateY(3px);
+  text-decoration: none;
+  box-shadow: 0 5px 0 #524d4d;
+}
+
+#secbox {
+  margin-left: 30px;
+}
+
+#namebox {
+  margin-left: 16px;
+}
+
+option {
+  margin-right: 50px;
+}

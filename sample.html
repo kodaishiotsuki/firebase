@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>会員登録アプリ</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- コンテンツ表示内容 -->
+    <div class="container">
+      <h1>Membership management</h1>
+      <label class="name">Name</label>
+      <input type="text" id="namebox" /><br /><br />
+      <label class="rollno">RollNo</label>
+      <input type="number" id="rollbox" /><br /><br />
+      <label class="type">Type </label
+      ><input type="text" id="secbox" /><br /><br />
+      <label>Gender</label>
+      <select id="genbox">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <hr />
+      <button id="insbtn">INSERT</button>
+      <button id="selbtn">SELECT</button>
+      <button id="updbtn">UPDATE</button>
+      <button id="delbtn">DELETE</button>
+    </div>
+    <!-- コンテンツ表示内容 -->
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- JQuery -->
+
+    <!--** 以下Firebase **-->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js";
+      //33〜41行目までは追加で記入！！
+      import {
+        //import内は使用する関数を定義
+        getFirestore,
+        collection,
+        doc,
+        addDoc,
+        getDoc,
+        setDoc,
+        updateDoc,
+        deleteDoc,
+        deleteField,
+        serverTimestamp,
+        query,
+        orderBy,
+        onSnapshot,
+        Timestamp,
+      } from "https://www.gstatic.com/firebasejs/9.2.0/firebase-firestore.js"; //importに定義したのをfirestoreで使用
+
+      const firebaseConfig = {
+        //apikeyは消す！
+        apiKey: "AIzaSyDw1RoxNMfAE1AlZWzYN6JLeXcTjp71sgA",
+        authDomain: "work-d7939.firebaseapp.com",
+        projectId: "work-d7939",
+        storageBucket: "work-d7939.appspot.com",
+        messagingSenderId: "819553065695",
+        appId: "1:819553065695:web:82cdcaaa9282b498a1676a",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app); //firestoreを使うよ
+
+      ///////////////////////////練習////////////////////////////////////
+      // const ref = collection(db, "chat"); //コレクション’chat’を使うよ
+
+      // //送信処理
+      // $("#send").on("click", function () {
+      //   //オブジェクト関数を定義
+      //   const ob = {
+      //     //inputタグ,id=nameを取得
+      //     name: $("#name").val(),
+      //     //inputタグ,id=textを取得
+      //     text: $("#text").val(),
+      //     //dateを取得
+      //     date: Timestamp.now(),
+      //   };
+      //   //addDoc(コレクション指定,オブジェクト変数);でデータ送信
+      //   const docRef = addDoc(ref, ob);
+      // });
+
+      // /////////////////////データ受信//////////////////////////////
+      // //70〜81は写経!!!中身だけ変更するイメージ
+      // const q = query(ref, orderBy("date", "desc"));
+      // onSnapshot(q, function (snapshot) {
+      //   snapshot.docChanges().forEach((change) => {
+      //     let h = "<p>";
+      //     h += change.doc.data().name;
+      //     h += "<br>";
+      //     h += change.doc.data().text;
+      //     h += "</p>";
+      //     //hを一番下に追加する
+      //     $("#output").append(h);
+      //   });
+      // });
+
+      //テキスト・ボタン定数を定義////////////////////////////////
+
+      let namebox = document.getElementById("namebox");
+      let rollbox = document.getElementById("rollbox");
+      let secbox = document.getElementById("secbox");
+      let genbox = document.getElementById("genbox");
+
+      let insbtn = document.getElementById("insbtn");
+      let selbtn = document.getElementById("selbtn");
+      let updbtn = document.getElementById("updbtn");
+      let delbtn = document.getElementById("delbtn");
+
+      ////////////////////INSERTセクション/////////////////////////
+      // async function AddDocument_AutoID() {
+      //   let ref = collection(db, "MenberList");
+      //   const docRef = await addDoc(ref, {
+      //     //inputタグ,id=nameboxを取得
+      //     NameOfStd: $("#namebox").val(),
+      //     //inputタグ,id=rollboxを取得
+      //     RollNo: $("#rollbox").val(),
+      //     //inputタグ,id=secboxを取得
+      //     Section: $("#secbox").val(),
+      //     //inputタグ,id=genboxを取得
+      //     Gender: $("#genbox").val(),
+      //   });
+      //   try {
+      //     alert("data added successfully!!");
+      //   } catch (error) {
+      //     alert("Unsuccessful operation error");
+      //   }
+      // }
+      //
+      //
+      //データ取得の条件指定
+      //firestoreのコレクション「MenberList」を定義
+      const ob = addDoc(collection(db, "MenberList"), {
+        //inputタグ,id=nameboxを取得
+        NameOfStd: $("#namebox").val(),
+        //inputタグ,id=rollboxを取得
+        RollNo: $("#rollbox").val(),
+        //inputタグ,id=secboxを取得
+        Section: $("#secbox").val(),
+        //inputタグ,id=genboxを取得
+        Gender: $("#genbox").val(),
+      });
+
+      ////////////////////////SETセクション////////////////////////
+      // async function AddDocument_CustomID() {
+      //   let ref = doc(db, "MenberList", rollbox.value);
+      //   await setDoc(ref, {
+      //     //inputタグ,id=nameboxを取得
+      //     NameOfStd: $("#namebox").val(),
+      //     //inputタグ,id=rollboxを取得
+      //     RollNo: $("#rollbox").val(),
+      //     //inputタグ,id=secboxを取得
+      //     Section: $("#secbox").val(),
+      //     //inputタグ,id=genboxを取得
+      //     Gender: $("#genbox").val(),
+      //   });
+      //   try {
+      //     alert("data added successfully!!");
+      //   } catch (error) {
+      //     alert("Unsuccessful operation error");
+      //   }
+      // };
+      // insbtn.addEventListener("click", AddDocument_CustomID);
+
+      //INSERTボタンを押すとイベント発生
+      $("#insbtn").on("click", function () {
+        const ob = {
+          //inputタグ,id=nameboxを取得
+          NameOfStd: $("#namebox").val(),
+          //inputタグ,id=rollboxを取得
+          RollNo: $("#rollbox").val(),
+          //inputタグ,id=secboxを取得
+          Section: $("#secbox").val(),
+          //inputタグ,id=genboxを取得
+          Gender: $("#genbox").val(),
+        };
+        //コレクション「MenberList」内のドキュメント「RollNo」をセット（固定？）
+        setDoc(doc(db, "MenberList", rollbox.value), ob);
+        try {
+          //セット成功したらアラート発生
+          alert("data added successfully!!");
+        } catch (error) {
+          //セット失敗したらアラート発生
+          alert("Unsuccessful operation error");
+        }
+      });
+      /////////////////////SELECTセクション////////////////////////
+
+      // $("#selbtn").on("click", function (e) {
+      //   const docsnap = getDoc(doc(db, "MenberList", rollbox.value));
+      //   // ↑何回も書いて覚える
+      //   if (docsnap !== null) {
+      //     //firestoreにrollboxの数字が存在するとき
+      //     //nameboxにfirestoreのNameOfStdを表示
+      //     $("#namebox").val(docsnap.data().NameOfStd);
+      //     //nameboxにfirestoreのSectionを表示
+      //     $("#secbox").val(docsnap.data().Section);
+      //     //nameboxにfirestoreのGenderを表示
+      //     $("#genbox").val(docsnap.data().Gender);
+      //   } else {
+      //     //ない時→アラート発生
+      //     alert("No such Document....");
+      //   }
+      // });
+
+      // selボタンを押す→RollNoからfirestore上のデータを出力
+      async function GetDocument() {
+        //firestore内のRollNoを取得
+        const docsnap = await getDoc(doc(db, "MenberList", rollbox.value));
+        //↑何回も書いて覚える
+        if (docsnap.exists()) {
+          //firestoreにrollboxの数字が存在するとき
+          //nameboxにfirestoreのNameOfStdを表示
+          $("#namebox").val(docsnap.data().NameOfStd);
+          //nameboxにfirestoreのSectionを表示
+          $("#secbox").val(docsnap.data().Section);
+          //nameboxにfirestoreのGenderを表示
+          $("#genbox").val(docsnap.data().Gender);
+        } else {
+          //ない時→アラート発生
+          alert("No such Document....");
+        }
+      }
+      //ボタンを押してイベント発生
+      selbtn.addEventListener("click", GetDocument);
+      //※on('click',function){}では動かなかった。。。。。。
+      /////////////////////////////////////////////
+
+      ///////////////////////UPDATE////////////////
+      //updbtnを押す→イベント発生
+      $("#updbtn").on("click", function () {
+        const ob = {
+          //inputタグ,id=nameboxを取得
+          NameOfStd: $("#namebox").val(),
+          //inputタグ,id=secboxを取得
+          Section: $("#secbox").val(),
+          //inputタグ,id=genboxを取得
+          Gender: $("#genbox").val(),
+        };
+        updateDoc(doc(db, "MenberList", rollbox.value), ob);
+        //↑何回も書いて覚える
+        try {
+          //アプデ→アラート発生
+          alert("data updated successfully!!");
+        } catch (error) {
+          //エラーアラート発生
+          alert("Unsuccessful operation error");
+        }
+      });
+
+      // async function UpdateFieldsInADocument() {
+      //   let ref = doc(db, "MenberList", rollbox.value);
+      //   await updateDoc(ref, {
+      //     //inputタグ,id=nameboxを取得
+      //     NameOfStd: $("#namebox").val(),
+      //     //inputタグ,id=secboxを取得
+      //     Section: $("#secbox").val(),
+      //     //inputタグ,id=genboxを取得
+      //     Gender: $("#genbox").val(),
+      //   });
+      //   try {
+      //     alert("data updated successfully!!");
+      //   } catch (error) {
+      //     alert("Unsuccessful operation error");
+      //   }
+      // }
+      // updbtn.addEventListener("click", UpdateFieldsInADocument);
+      ////////////////////////////////////////////////////////////
+
+      /////////////////////DELETEセクション////////////////////////
+      //delボタンを押す→RollNoからfirestore上のデータを削除
+      async function DeleteDocument() {
+        let ref = doc(db, "MenberList", rollbox.value);
+        const docsnap = await getDoc(ref);
+        if (!docsnap.exists()) {
+          alert("document does not exist😢");
+          return;
+        }
+
+        await deleteDoc(ref);
+        try {
+          alert("data deleted successfully!!");
+        } catch (error) {
+          alert("Unsuccessful operation error");
+        }
+      }
+      delbtn.addEventListener("click", DeleteDocument);
+      /////////////////////////////////////////////////////////////
+    </script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
